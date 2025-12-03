@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg bg-success">
+  <div class="container">
+    <style>
+      .classic {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+      }
+    </style>
+    <a class="navbar-brand" href="{% url 'readShoe' %}"><img src="shoeProject\templates\assets\image\Svg\icon.svg" alt="logo" class="classic">
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'home' %}"
+            >Home</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
