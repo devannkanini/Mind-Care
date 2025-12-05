@@ -1,0 +1,11 @@
+{% extends 'main.html' %}
+{% block content %}
+<h2>Submitted Issues</h2>
+<ul>
+    {% for issue in issues %}
+        <li>{{ issue.title }} - {{ issue.category }} - {{ issue.created_at }}</li>
+    {% empty %}
+        <li>No issues submitted yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

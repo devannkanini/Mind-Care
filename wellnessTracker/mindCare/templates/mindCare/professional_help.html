@@ -1,0 +1,19 @@
+{% extends "mindCare/main.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Professional Help</h2>
+    <div class="row">
+        {% for p in professionals %}
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4 p-3">
+                <h5 class="fw-bold">{{ p.name }}</h5>
+                <p><strong>Specialty:</strong> {{ p.specialization }}</p>
+                <p><strong>Contact:</strong> {{ p.contact }}</p>
+                <p><strong>Location:</strong> {{ p.location }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

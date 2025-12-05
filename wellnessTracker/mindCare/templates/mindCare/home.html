@@ -1,12 +1,17 @@
 {%extends 'main.html'%} {% block content%}
 <nav class="navbar" >
-  <div class="container d-flex justify-content-center">
-    <span class="badge rounded-pill" style="background-color:#d5f5e3; color:#117a65; font-size:1.6rem;">
-      mind
-      <span class="px-2 rounded-pill" style="background-color:#117a65; color:white;">
-        Care
-      </span>
-    </span>
+  <div class="container-fluid bg-light p-5 rounded-3">
+    <h1 class="display-5 fw-bold">Welcome to MindCare</h1>
+    <p class="col-md-8 fs-4">
+      Your mental wellness companion. Track your mood, manage stress, and find
+      professional help all in one place.
+    </p>
+    <a
+      class="btn btn-primary btn-lg"
+      href="{% url 'mindCare:registerUser' %}"
+      role="button"
+      >Get Started</a
+    >
   </div>
 </nav>
 
