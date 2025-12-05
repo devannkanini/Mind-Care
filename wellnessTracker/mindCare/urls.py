@@ -10,6 +10,8 @@ urlpatterns = [
     path('professional-help/', views.professional_help, name='professional_help'),
     path('create-issue/', views.create_issue, name='create_issue'),
     path('issue/', views.fetch_issues, name='fetch_issues'),
-     path('request-help/', views.request_help, name='request_help'),
+    path('request-help/', views.request_help, name='request_help'),
+    path('mpesaPayment/', views.mpesaPayment, name='mpesaPayment'),
+
 
 ]

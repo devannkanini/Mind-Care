@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
+from django.http import HttpResponse
+from django_daraja.mpesa.core import MpesaClient
+
+
+
 
 from .forms import IssueForm, HelpRequestForm
 from .models import Issue, RequestHelp, ProfessionalHelp  
@@ -75,3 +80,31 @@ def request_help(request):
         form = HelpRequestForm()
     
     return render(request, 'mindCare/request_help.html', {'form': form})
+def index(request):
+
+        cl = MpesaClient()
+        # Use a Safaricom phone number that you have access to, for you to be able to view the prompt.
+        # phone_number = '0717817826'
+        # amount = 1
+        # account_reference = 'reference'
+        # transaction_desc = 'Description'
+        # callback_url = 'https://api.darajambili.com/express-payment'
+        # response = cl.stk_push(phone_number, amount, account_reference, transaction_desc, callback_url)
+        # return HttpResponse(response)
+
+def mpesaPayment(request):
+    if request.method == 'POST':
+        phoneNumber = request.POST.get('phoneNumber')
+        amount = int(request.POST.get('amount'))
+
+        cl = MpesaClient()
+        accountReference = 'Professional Help'
+        transactionDesc = 'payment for professional help'
+        callbackUrl = 'https://api.darajambili.com/express-payment'
+
+        response = cl.stk_push(phoneNumber, amount, accountReference, transactionDesc, callbackUrl)
+
+        return render(request, 'mindCare/mpesa_payments.html', {"response": response})
+
+    # GET request → just load the page, don’t use phoneNumber
+    return render(request, 'mindCare/mpesa_payments.html')
