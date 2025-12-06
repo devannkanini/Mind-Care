@@ -1,8 +1,16 @@
-{%extends 'main.html'%} {% block content%}
-<nav class="navbar" >
-  <div class="container-fluid bg-light p-5 rounded-3">
-    <h1 class="display-5 fw-bold">Welcome to MindCare</h1>
-    <p class="col-md-8 fs-4">
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Link the CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'mindCare/assets/style.css' %}">
+
+<!-- Hero Section -->
+<nav class="navbar">
+  <div class="container-fluid hero-section p-5 rounded-3 text-center">
+    <h1 class="display-5 fw-bold mb-3">Welcome to MindCare </h1>
+    <p class="col-md-8 fs-4 mx-auto mb-4">
       Your mental wellness companion. Track your mood, manage stress, and find
       professional help all in one place.
     </p>
@@ -10,11 +18,36 @@
       class="btn btn-primary btn-lg"
       href="{% url 'mindCare:registerUser' %}"
       role="button"
-      >Get Started</a
     >
+      Get Started
+    </a>
   </div>
 </nav>
 
+<!-- Action Cards Section -->
+<div class="container mt-5 d-flex justify-content-center gap-4 flex-wrap">
+  <a href="{% url 'mindCare:loginUser' %}" class="card action-card text-center text-decoration-none">
+    <div class="card-body">
+      <h5 class="card-title">Login </h5>
+      <p class="card-text">Access your dashboard and track your progress.</p>
+    </div>
+  </a>
+  <a href="{% url 'mindCare:dashboard' %}" class="card action-card text-center text-decoration-none">
+    <div class="card-body">
+      <h5 class="card-title">Dashboard </h5>
+      <p class="card-text">View your mood logs and mental wellness stats.</p>
+    </div>
+  </a>
+  <a href="{% url 'mindCare:professional_help' %}" class="card action-card text-center text-decoration-none">
+    <div class="card-body">
+      <h5 class="card-title">Professional Help 💬</h5>
+      <p class="card-text">Connect with mental health professionals safely.</p>
+    </div>
+  </a>
+</div>
 
-
-{% endblock%}
+<!-- Footer -->
+<footer class="text-center mt-5 py-3">
+  &copy; 2025 MindCare. All rights reserved 🌿
+</footer>
+{% endblock %}

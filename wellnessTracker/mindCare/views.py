@@ -9,7 +9,11 @@ from django_daraja.mpesa.core import MpesaClient
 
 
 from .forms import IssueForm, HelpRequestForm
-from .models import Issue, RequestHelp, ProfessionalHelp  
+from .models import Issue, RequestHelp, ProfessionalHelp 
+from .models import MoodLog, RequestHelp, JournalEntry 
+from .models import MoodLog, JournalEntry
+
+
 
 
 
@@ -23,8 +27,24 @@ def home(request):
     return render(request, 'mindCare/home.html')
 
 # Login page
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect, render
+
 def loginUser(request):
-    return render(request, 'mindCare/login_form.html')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('mindCare:dashboard')   
+        else:
+            return render(request, 'mindCare/login.html', {'error': 'Invalid credentials'})
+    
+    return render(request, 'mindCare/login.html')
+
 
 # Register page
 def registerUser(request):
@@ -37,7 +57,7 @@ def logoutUser(request):
 
 # Professional Help page
 @login_required
-def professional_help(request):
+def professionalHelp(request):
     # Example data - later you can pull from DB
     professionals = [
         {"name": "Dr. Jane Mwangi", "specialty": "Psychologist", "email": "jane@example.com", "phone": "0741234567"},
@@ -61,25 +81,24 @@ def fetch_issues(request):
     
     return render(request, 'mindCare/issues.html')
 
-def professional_help(request):
+def professionalHelp(request):
     professionals = ProfessionalHelp.objects.all()
     return render(request, 'mindCare/professional_help.html', {'professionals': professionals})
 
-
 @login_required
-def request_help(request):
+def requestHelp(request):
     if request.method == 'POST':
         form = HelpRequestForm(request.POST)
         if form.is_valid():
-            help_request = form.save(commit=False)
-            help_request.user = request.user  # link request to logged-in user
-            help_request.save()
+            helpRequest = form.save(commit=False)
+            helpRequest.user = request.user  # link request to logged-in user
+            helpRequest.save()
             messages.success(request, "Your help request has been sent! A professional will reach out.")
-            return redirect('mindCare:request_help')  # redirect to same page or a "list" page
+            return redirect('mindCare:requestHelp')  # redirect to same page or a "list" page
     else:
         form = HelpRequestForm()
     
-    return render(request, 'mindCare/request_help.html', {'form': form})
+    return render(request, 'mindCare/requestHelp.html', {'form': form})
 def index(request):
 
         cl = MpesaClient()
@@ -108,3 +127,72 @@ def mpesaPayment(request):
 
     # GET request → just load the page, don’t use phoneNumber
     return render(request, 'mindCare/mpesa_payments.html')
+
+@login_required
+def user_dashboard(request):
+    issues = Issue.objects.filter(user=request.user) if hasattr(Issue, 'user') else Issue.objects.all()
+    help_requests = RequestHelp.objects.filter(user=request.user)
+    
+    context = {
+        'issues': issues,
+        'help_requests': help_requests,
+    }
+    return render(request, 'mindCare/dashboard.html', context)
+
+@login_required
+def logMood(request):
+    if request.method == "POST":
+        mood_value = request.POST.get('mood')
+        MoodLog.objects.create(user=request.user, mood=mood_value)
+        return redirect('mindCare:dashboard')
+    return render(request, 'mindCare/mood.html')
+
+@login_required
+def logJournal(request):
+    if request.method == "POST":
+        content = request.POST.get('content')
+        JournalEntry.objects.create(user=request.user, entry=content)  # <-- use 'entry'
+        return redirect('mindCare:dashboard')
+    return render(request, 'mindCare/journal.html')
+@login_required
+def fetch_issues(request):
+    issues = Issue.objects.all()
+    return render(request, 'mindCare/issues.html', {'issues': issues})
+
+@login_required
+def dashboard(request):
+    # Get user-specific data
+    moods = MoodLog.objects.filter(user=request.user).order_by('-created_at')[:7]  # last 7 moods
+    journals = JournalEntry.objects.filter(user=request.user).order_by('-created_at')[:5]  # last 5 journals
+    help_requests = RequestHelp.objects.filter(user=request.user)
+
+    context = {
+        'moods': moods,
+        'journals': journals,
+        'help_requests': help_requests,
+    }
+    return render(request, 'mindCare/dashboard.html', context)
+    from django.contrib.auth.models import User
+
+def registerUser(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
+
+        if password1 != password2:
+            messages.error(request, "Passwords do not match")
+            return redirect("mindCare:registerUser")
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already taken")
+            return redirect("mindCare:registerUser")
+
+        User.objects.create_user(username=username, email=email, password=password1)
+        messages.success(request, "Account created successfully!")
+        return redirect("mindCare:loginUser")
+
+    return render(request, 'mindCare/register_form.html')
+
+

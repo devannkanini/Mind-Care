@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 
 
+
 # Create your models here.
 
 class Issue(models.Model):
@@ -50,3 +51,29 @@ class RequestHelp(models.Model):
 
         def __str__(self):
          return f"{self.user.username} - {self.professional_name}"
+
+
+
+class MoodLog(models.Model):
+     MOOD_CHOICES = [
+        ('happy', 'Happy'),
+        ('sad', 'Sad'),
+        ('neutral', 'Neutral'),
+        ('anxious', 'Anxious'),
+        ('stressed', 'Stressed'),
+    ]
+     user = models.ForeignKey(User, on_delete=models.CASCADE)
+     mood = models.CharField(max_length=20, choices=MOOD_CHOICES)
+     level = models.IntegerField(default=5)  # 1-10 scale
+     created_at = models.DateTimeField(auto_now_add=True)
+
+     def __str__(self):
+        return f"{self.user.username} - {self.mood} ({self.level})"
+
+class JournalEntry(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    entry = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.created_at.strftime('%Y-%m-%d')}"
