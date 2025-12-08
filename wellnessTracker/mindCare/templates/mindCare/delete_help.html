@@ -1,0 +1,18 @@
+{% extends 'mindCare/home.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Delete Professional Help</h2>
+
+    <div class="alert alert-danger">
+        Are you sure you want to delete:
+        <strong>{{ professional.title }}</strong> ?
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="{% url 'mindCare:help_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

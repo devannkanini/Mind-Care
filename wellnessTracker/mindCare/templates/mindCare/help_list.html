@@ -1,0 +1,15 @@
+{% extends "main.html" %}
+{% for professional in professionals %}
+<div class="card m-2 p-3 border">
+    <h3>{{ professional.title }}</h3>
+    <p>{{ professional.description }}</p>
+    <p><strong>Availability:</strong> {{ professional.availability }}</p>
+    <p><strong>Location:</strong> {{ professional.location }}</p>
+    <p><strong>Price:</strong> KES {{ professional.price }}</p>
+    <p><strong>Contact:</strong> {{ professional.contact }}</p>
+    <a href="{% url 'mindCare:update_help' professional.id %}" class="btn btn-warning">Edit</a>
+    <a href="{% url 'mindCare:delete_help' professional.id %}" class="btn btn-danger">Delete</a>
+</div>
+{% empty %}
+<p>No professional help added yet.</p>
+{% endfor %}

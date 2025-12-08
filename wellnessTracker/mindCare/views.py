@@ -4,11 +4,14 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from django.http import HttpResponse
 from django_daraja.mpesa.core import MpesaClient
+from django.contrib.auth.models import User
 
 
 
 
-from .forms import IssueForm, HelpRequestForm
+
+
+from .forms import IssueForm, HelpRequestForm, ProfessionalHelpForm
 from .models import Issue, RequestHelp, ProfessionalHelp 
 from .models import MoodLog, RequestHelp, JournalEntry 
 from .models import MoodLog, JournalEntry
@@ -55,16 +58,16 @@ def logoutUser(request):
     logout(request)
     return redirect('home') 
 
-# Professional Help page
-@login_required
-def professionalHelp(request):
-    # Example data - later you can pull from DB
-    professionals = [
-        {"name": "Dr. Jane Mwangi", "specialty": "Psychologist", "email": "jane@example.com", "phone": "0741234567"},
-        {"name": "Dr. John Kimani", "specialty": "Counselor", "email": "john@example.com", "phone": "0749876543"},
-        {"name": "Dr. Aisha Hassan", "specialty": "Therapist", "email": "aisha@example.com", "phone": "0712345678"},
-    ]
-    return render(request, 'mindCare/professional_help.html', {"professionals": professionals})
+# # Professional Help page
+# # @login_required
+# def professionalHelp(request):
+#     # Example data - later you can pull from DB
+#     professionals = [
+#         {"name": "Dr. Jane Mwangi", "specialty": "Psychologist", "email": "jane@example.com", "phone": "0741234567"},
+#         {"name": "Dr. John Kimani", "specialty": "Counselor", "email": "john@example.com", "phone": "0749876543"},
+#         {"name": "Dr. Aisha Hassan", "specialty": "Therapist", "email": "aisha@example.com", "phone": "0712345678"},
+#     ]
+#     return render(request, 'mindCare/professional_help.html', {"professionals": professionals})
 
 def create_issue(request):
     if request.method == 'POST':
@@ -81,9 +84,10 @@ def fetch_issues(request):
     
     return render(request, 'mindCare/issues.html')
 
-def professionalHelp(request):
+def help_list(request):
     professionals = ProfessionalHelp.objects.all()
-    return render(request, 'mindCare/professional_help.html', {'professionals': professionals})
+    context={'professionals': professionals}
+    return render(request, 'mindCare/professional_help.html', context)
 
 @login_required
 def requestHelp(request):
@@ -195,4 +199,58 @@ def registerUser(request):
 
     return render(request, 'mindCare/register_form.html')
 
+
+@login_required
+def help_list(request):
+    professionals = ProfessionalHelp.objects.all()
+    return render(request, 'mindCare/help_list.html', {'professionals': professionals})
+@login_required
+def create_help(request):
+    form =ProfessionalHelpForm ()
+    if request.method == "POST":
+        form =ProfessionalHelpForm(request.POST)  # gets the data from what the user has input
+        if form.is_valid():
+            form.save()
+            return redirect('mindCare:help_list')
+    context = {"form": form}
+    return render(request, 'mindCare/create_help.html')
+
+@login_required
+def update_help(request, id):
+    professional = ProfessionalHelp.objects.get(id=id)
+
+    if request.method == "POST":
+        professional.title = request.POST.get('title')
+        professional.description = request.POST.get('description')
+        professional.save()
+
+        messages.success(request, "Updated successfully!")
+        return redirect('mindCare:help_list')
+
+    return render(request, 'mindCare/update_help.html', {'professional': professional})
+@login_required
+def delete_help(request, id):
+    professional = ProfessionalHelp.objects.get(id=id)
+
+    if request.method == "POST":
+        professional.delete()
+        messages.success(request, "Deleted successfully!")
+        return redirect('mindCare:help_list')
+
+    return render(request, 'mindCare/delete_help.html', {'professional': professional})
+@login_required
+def journal_detail(request, id):
+    journal = JournalEntry.objects.get(id=id, user=request.user)
+    return render(request, 'mindCare/journal_detail.html', {'journal': journal})
+
+def about_us(request):
+    return render(request, 'mindCare/about_us.html')
+
+def get_started(request):
+    if request.user.is_authenticated:
+        # If user is logged in, go to dashboard
+        return redirect('mindCare:dashboard')
+    else:
+        # If not logged in, go to register page
+        return redirect('mindCare:registerUser')
 

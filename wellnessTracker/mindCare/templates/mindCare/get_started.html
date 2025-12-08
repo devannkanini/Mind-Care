@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+<section class="get-started d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="text-center p-5 border rounded shadow" style="max-width: 500px; background-color: #f8f9fa;">
+        <h1 class="mb-4">Welcome to MindCare</h1>
+        <p class="mb-4">Start your journey to focus, awareness, and mental wellness.</p>
+        
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'mindCare:registerUser' %}" class="btn btn-primary btn-lg">Register</a>
+            <a href="{% url 'mindCare:loginUser' %}" class="btn btn-outline-dark btn-lg">Login</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- About Us Section -->
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">About Us</h1>
+    <p class="fs-5 text-center mb-5">
+        MindCare is your mental wellness companion. Our mission is to provide accessible mental health support 
+        through mood tracking, journaling, and connecting you with professional therapists and counselors.
+    </p>
+
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <img src="{% static 'mindCare/assets/images/mission.jpg' %}" class="img-fluid rounded mb-3" alt="Mission">
+            <h3>Our Mission</h3>
+            <p>To empower individuals to manage their mental wellness and access professional support easily.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <img src="{% static 'mindCare/assets/images/goal.jpg' %}" class="img-fluid rounded mb-3" alt="Goal">
+            <h3>Our Goal</h3>
+            <p>To create a safe, supportive space where everyone can track their mental health, reflect, and seek help when needed.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <img src="{% static 'mindCare/assets/images/vision.jpg' %}" class="img-fluid rounded mb-3" alt="Vision">
+            <h3>Our Vision</h3>
+            <p>To be the most trusted mental health companion for individuals everywhere, helping them track, reflect, and grow.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center mt-5 py-3">
+  &copy; 2025 MindCare. All rights reserved 🌿
+</footer>
+
+{% endblock %}

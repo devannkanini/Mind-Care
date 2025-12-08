@@ -1,0 +1,8 @@
+
+{% extends 'mindCare/home.html' %}
+<h2>Journal Entry - {{ journal.created_at|date:"M d, Y" }}</h2>
+<p>{{ journal.entry }}</p>
+<a href="{% url 'mindCare:dashboard' %}">Back to Dashboard</a>
+
+{% block content %}
+{% endblock %}

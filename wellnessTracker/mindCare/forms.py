@@ -13,3 +13,19 @@ class HelpRequestForm(forms.ModelForm):
     class Meta:
         model = RequestHelp
         fields = ['professional_name', 'issue_title', 'issue_description']
+
+        from django import forms
+from .models import ProfessionalHelp
+
+class ProfessionalHelpForm(forms.ModelForm):
+    class Meta:
+        model = ProfessionalHelp
+        fields = ['title', 'description', 'availability', 'location', 'price', 'contact']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. Pediatrician / Counsellor'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Describe service...'}),
+            'availability': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. Mon-Fri 9am-5pm'}),
+            'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'City / Clinic name'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'placeholder': 'e.g. 1500.00'}),
+            'contact': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone or email'}),
+        }

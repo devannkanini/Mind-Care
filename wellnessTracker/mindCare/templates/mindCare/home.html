@@ -5,46 +5,37 @@
 
 <!-- Link the CSS -->
 <link rel="stylesheet" type="text/css" href="{% static 'mindCare/assets/style.css' %}">
-
 <!-- Hero Section -->
-<nav class="navbar">
-  <div class="container-fluid hero-section p-5 rounded-3 text-center">
-    <h1 class="display-5 fw-bold mb-3">Welcome to MindCare </h1>
-    <p class="col-md-8 fs-4 mx-auto mb-4">
-      Your mental wellness companion. Track your mood, manage stress, and find
-      professional help all in one place.
-    </p>
-    <a
-      class="btn btn-primary btn-lg"
-      href="{% url 'mindCare:registerUser' %}"
-      role="button"
-    >
-      Get Started
-    </a>
-  </div>
-</nav>
+<section class="hero text-center p-5">
+  <h1>Welcome to MindCare</h1>
+  <p>Your mind deserves a gentle place to land.
+    At MindCare, we guide you through healing,growth, and emotional clarity- one step at a time.
+    Start your journey with tools,support, and a safe space built just for you.
+  </p>
+  <a href="{% url 'mindCare:get_started' %}" class="btn btn-primary me-2">Get Started</a>
+  <a href="{% url 'mindCare:about_us' %}" class="btn btn-outline-dark m-2">About Us</a>
+</section>
 
-<!-- Action Cards Section -->
-<div class="container mt-5 d-flex justify-content-center gap-4 flex-wrap">
-  <a href="{% url 'mindCare:loginUser' %}" class="card action-card text-center text-decoration-none">
-    <div class="card-body">
-      <h5 class="card-title">Login </h5>
-      <p class="card-text">Access your dashboard and track your progress.</p>
-    </div>
-  </a>
-  <a href="{% url 'mindCare:dashboard' %}" class="card action-card text-center text-decoration-none">
-    <div class="card-body">
-      <h5 class="card-title">Dashboard </h5>
-      <p class="card-text">View your mood logs and mental wellness stats.</p>
-    </div>
-  </a>
-  <a href="{% url 'mindCare:professional_help' %}" class="card action-card text-center text-decoration-none">
-    <div class="card-body">
-      <h5 class="card-title">Professional Help 💬</h5>
-      <p class="card-text">Connect with mental health professionals safely.</p>
-    </div>
-  </a>
-</div>
+<!-- Features Section -->
+<section class="features d-flex justify-content-center mt-5">
+  <div class="feature-card text-center m-3 p-3 border rounded">
+    <img src="{% static '/images\focus.svg' %}" alt="Increase Focus">
+    <h3>Increase Focus</h3>
+    <p>Clear strategies to sharpen attention and prioritize what matters most.</p>
+  </div>
+
+  <div class="feature-card text-center m-3 p-3 border rounded">
+    <img src="{% static 'images/awareness.svg' %}" alt="Self Awareness">
+    <h3>Self-Awareness</h3>
+    <p>Understand your patterns, values, and the beliefs that shape your choices.</p>
+  </div>
+
+  <div class="feature-card text-center m-3 p-3 border rounded">
+    <img src="{% static 'images/improve mental health.svg' %}" alt="Improve Mental Health">
+    <h3>Improve Mental Health</h3>
+    <p>Practical tools for confidence, communication, emotion, and improve overall mental health.</p>
+  </div>
+</section>
 
 <!-- Footer -->
 <footer class="text-center mt-5 py-3">
