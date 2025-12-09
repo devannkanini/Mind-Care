@@ -1,0 +1,74 @@
+{% extends 'main.html' %} 
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="fw-bold text-primary mb-4">Counselor Dashboard 🧠</h1>
+    
+    <div class="card shadow-sm mb-5">
+        <div class="card-header bg-light">
+            <h4 class="mb-0">Welcome, {{ user.get_full_name|default:user.username }}</h4>
+        </div>
+        <div class="card-body">
+            {% if profile %}
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Title:</strong> {{ profile.title }}</p>
+                    <p><strong>Location:</strong> {{ profile.location }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Contact:</strong> {{ profile.contact }}</p>
+                    <p><strong>Availability:</strong> {{ profile.availability }}</p>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-danger">Your professional profile details are incomplete. Please contact the administrator.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <h2 class="mb-3">Pending Client Requests</h2>
+    
+    {% if requests %}
+        <div class="row">
+            {% for req in requests %}
+            <div class="col-md-6 mb-4">
+                <div class="card border-warning shadow-sm h-100">
+                    <div class="card-header bg-warning text-dark">
+                        <small>Request ID: #{{ req.id }}</small>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Client: {{ req.user.get_full_name|default:req.user.username }}</h5>
+                        <p class="card-text">
+                            <strong>Issue:</strong> {{ req.message|truncatechars:150 }}
+                        </p>
+                        <p class="text-muted small">Requested on: {{ req.date_requested|date:"M d, Y P" }}</p>
+
+                        <div class="mt-auto">
+                            <form method="POST" action="{% url 'mindCare:update_request_status' req.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="contacted">
+                                <button type="submit" class="btn btn-primary btn-sm">Mark as Contacted</button>
+                            </form>
+                            
+                            <form method="POST" action="{% url 'mindCare:update_request_status' req.id %}" class="d-inline ms-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="resolved">
+                                <button type="submit" class="btn btn-success btn-sm">Mark as Resolved</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            🎉 You currently have no pending client requests.
+            Enjoy the peace!
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
