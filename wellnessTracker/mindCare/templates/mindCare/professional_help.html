@@ -1,0 +1,26 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Professional Help</h2>
+
+    {% if professionals %}
+        <div class="row">
+            {% for pro in professionals %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0 p-3">
+                    <h5>{{ pro.name }}</h5>
+                    <p><strong>Title:</strong> {{ pro.title }}</p>
+                    <p><strong>Contact:</strong> {{ pro.contact }}</p>
+                    <p><strong>Location:</strong> {{ pro.location }}</p>
+                    <p><strong>Availability:</strong> {{ pro.availability }}</p>
+                    <p><strong>Price:</strong> KES {{ pro.price }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No professionals available at the moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'mindCare/home.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Your Issues</h2>
+
+    {% if issues %}
+        <ul class="list-group mt-3">
+        {% for issue in issues %}
+            <li class="list-group-item">
+                <strong>{{ issue.title }}</strong> - {{ issue.category }} <br>
+                {{ issue.description }} <br>
+                <small>{{ issue.date_created|date:"M d, Y H:i" }}</small>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No issues submitted yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

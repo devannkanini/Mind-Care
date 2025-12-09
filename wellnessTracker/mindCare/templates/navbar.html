@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-info shadow-sm py-3">
+  <div class="container">
+    
+    <a class="navbar-brand fw-bold text-primary" href="{% url 'mindCare:home' %}">
+      MindCare
+    </a>
+     <link rel="shortcut icon" href="images/logo.svg" type="image/x-icon" />
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'mindCare:home' %}">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'mindCare:dashboard' %}">Dashboard</a>
+        </li>
+
+        <li class="nav-item">
+       <a class="nav-link" href="{% url 'mindCare:help_list' %}">Professional Help</a>
+
+        </li>
+
+      </ul>
+
+      <!-- RIGHT SIDE BUTTONS -->
+      <ul class="navbar-nav ms-auto">
+
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link text-danger" href="{% url 'mindCare:logoutUser' %}">
+              Logout
+            </a>
+          </li>
+
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'mindCare:loginUser' %}">Login</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'mindCare:registerUser' %}">Register</a>
+          </li>
+        {% endif %}
+
+      </ul>
+    </div>
+  </div>
+</nav>

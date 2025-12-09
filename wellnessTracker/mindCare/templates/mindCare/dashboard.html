@@ -1,0 +1,164 @@
+{% extends 'mindCare/home.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Greeting -->
+    <h3 class="fw-bold text-primary">Hi {{ request.user.username }} </h3>
+    <p class="text-muted">How are you feeling today?</p>
+
+    <!-- Quick Action Buttons -->
+    <div class="row mt-3 gap-3">
+        <div class="col-md-3">
+            <a href="{% url 'mindCare:mood' %}" class="btn btn-outline-primary w-100">
+                Log Mood
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="{% url 'mindCare:journal' %}" class="btn btn-outline-warning w-100">
+                Write Journal
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="{% url 'mindCare:fetch_issues' %}" class="btn btn-outline-success w-100">
+                View Requests
+            </a>
+        </div>
+
+        <div class="col-md-3">
+          <a href="{% url 'mindCare:help_list' %}" class="card action-card text-center text-decoration-none">
+
+                Professional Help
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-3">
+                <h6 class="text-muted">Mood Today</h6>
+                <h4>{{ latest_mood.mood|default:"No data" }}</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-3">
+                <h6 class="text-muted">Last Journal</h6>
+                <h4>{{ journals.0.created_at|date:"M d"|default:"No journal" }}</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-3">
+                <h6 class="text-muted">Last Request</h6>
+                <h4>{{ last_request.created_at|date:"M d"|default:"No requests" }}</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-3">
+                <h6 class="text-muted">This Week</h6>
+                <h4>●●●</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mood Chart -->
+    <div class="card shadow-sm border-0 mt-4 p-3">
+        <h5 class="fw-bold">Your Mood This Week</h5>
+        <canvas id="moodChart"></canvas>
+    </div>
+
+    <!-- Previous Moods -->
+    <div class="card shadow-sm mt-4 p-3">
+        <h5 class="fw-bold">Previous Moods</h5>
+        <ul class="list-group">
+            {% for mood in moods %}
+                <li class="list-group-item">
+                    {{ mood.created_at|date:"M d, Y" }} - {{ mood.mood }}
+                </li>
+            {% empty %}
+                <li class="list-group-item text-muted">No mood entries yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Previous Journals -->
+    <div class="card shadow-sm mt-4 p-3">
+        <h5 class="fw-bold">Previous Journals</h5>
+        <ul class="list-group">
+            {% for journal in journals %}
+                <li class="list-group-item">
+                    {{ journal.created_at|date:"M d, Y" }} - {{ journal.entry|truncatewords:10 }}
+                </li>
+            {% empty %}
+                <li class="list-group-item text-muted">No journal entries yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+<!-- Recent Moods -->
+<div class="card shadow-sm border-0 mt-4 p-3">
+    <h5 class="fw-bold">Recent Moods</h5>
+    {% if moods %}
+        <ul class="list-group">
+            {% for mood in moods %}
+                <li class="list-group-item">
+                    {{ mood.created_at|date:"M d, Y" }} - {{ mood.get_mood_display }} (Level: {{ mood.level }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No moods logged yet.</p>
+    {% endif %}
+</div>
+
+<!-- Recent Journals -->
+<div class="card shadow-sm border-0 mt-4 p-3">
+    <h5 class="fw-bold">Recent Journal Entries</h5>
+    {% if journals %}
+        <ul class="list-group">
+            {% for journal in journals %}
+                <li class="list-group-item">
+                    {{ journal.created_at|date:"M d, Y" }} - {{ journal.entry|truncatewords:20 }}
+                    <a href="{% url 'mindCare:journal_detail' journal.id %}">Read More</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No journal entries yet.</p>
+    {% endif %}
+</div>
+
+<!-- Chart.js -->
+<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('moodChart').getContext('2d');
+const moodChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [{
+            label: 'Mood',
+            data: [{% for m in mood_data %}{{ m }}{% if not forloop.last %},{% endif %}{% endfor %}],
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            fill: true,
+            tension: 0.3
+        }]
+    },
+    options: {
+        scales: {
+            y: { beginAtZero: true, suggestedMax: 5 }
+        }
+    }
+});
+</script>
+
+{% endblock %}
