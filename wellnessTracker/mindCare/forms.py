@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Issue, RequestHelp
+from .models import Issue, HelpRequest, Booking
+from .models import MoodLog 
 
 
 
@@ -10,10 +11,12 @@ class IssueForm(ModelForm):
         fields = ['title', 'description', 'category', ]
  
 class HelpRequestForm(forms.ModelForm):
+    
     class Meta:
-        model = RequestHelp
-        fields = ['professional_name', 'issue_title', 'issue_description']
-
+        model = HelpRequest
+        fields = ['message'] 
+        
+        
         from django import forms
 from .models import ProfessionalHelp
 
@@ -29,3 +32,28 @@ class ProfessionalHelpForm(forms.ModelForm):
             'price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'placeholder': 'e.g. 1500.00'}),
             'contact': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone or email'}),
         }
+
+
+
+
+class BookingForm(forms.ModelForm):
+    class Meta:
+        model = Booking
+        fields = ['booking_date', 'booking_time', 'session_type', 'phone_number', 'description']
+        widgets = {
+            'booking_date': forms.DateInput(attrs={'type': 'date'}),
+            'booking_time': forms.TimeInput(attrs={'type': 'time'}),
+        }
+        
+class MoodLogForm(forms.ModelForm):
+
+    level = forms.IntegerField(
+        min_value=1,
+        max_value=10,
+        label="Intensity Level (1-10)",
+        widget=forms.NumberInput(attrs={'min': 1, 'max': 10})
+    )
+    
+    class Meta:
+        model = MoodLog
+        fields = ['mood', 'level']
