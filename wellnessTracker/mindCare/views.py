@@ -15,6 +15,7 @@ from .forms import IssueForm, HelpRequestForm, ProfessionalHelpForm
 from .models import Issue, RequestHelp, ProfessionalHelp 
 from .models import MoodLog, RequestHelp, JournalEntry 
 from .models import MoodLog, JournalEntry
+from .models import ProfessionalHelp
 
 
 
@@ -202,18 +203,22 @@ def registerUser(request):
 
 @login_required
 def help_list(request):
+    print(ProfessionalHelp)
     professionals = ProfessionalHelp.objects.all()
-    return render(request, 'mindCare/help_list.html', {'professionals': professionals})
+    return render(request, 'mindCare/professional_help.html', {'professionals': professionals})
+
+@login_required
 @login_required
 def create_help(request):
-    form =ProfessionalHelpForm ()
     if request.method == "POST":
-        form =ProfessionalHelpForm(request.POST)  # gets the data from what the user has input
+        form = ProfessionalHelpForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('mindCare:help_list')
-    context = {"form": form}
-    return render(request, 'mindCare/create_help.html')
+            return redirect('mindCare:help_list')  # use the URL name, not the path
+    else:
+        form = ProfessionalHelpForm()
+
+    return render(request, 'mindCare/create_help.html', {'form': form})
 
 @login_required
 def update_help(request, id):

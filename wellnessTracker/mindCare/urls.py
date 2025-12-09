@@ -16,7 +16,7 @@ urlpatterns = [
     path('professional-help/update/<int:id>/', views.update_help, name='update_help'),
     path('professional-help/delete/<int:id>/', views.delete_help, name='delete_help'),
 
-    path('create-issue/', views.create_issue, name='create_issue'),
+    # path('create-issue/', views.create_issue, name='create_issue'),
     path('issue/', views.fetch_issues, name='fetch_issues'),
     path('request-help/', views.requestHelp, name='request_help'),
     path('mpesaPayment/', views.mpesaPayment, name='mpesaPayment'),

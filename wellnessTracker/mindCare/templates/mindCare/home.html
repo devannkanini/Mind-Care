@@ -7,6 +7,19 @@
 <link rel="stylesheet" type="text/css" href="{% static 'mindCare/assets/style.css' %}">
 <!-- Hero Section -->
 <section class="hero text-center p-5">
+  <div class="hero-section d-flex flex-column justify-content-center align-items-center text-center"
+     style="background-image: url('{% static 'images/hero image.jpg' %}'); 
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat; 
+            height: 100vh; 
+            position: relative;">
+
+    <!-- Overlay -->
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
+                background-color: rgba(0,0,0,0.4); z-index: 0;"></div>
+  <div style="position: relative; z-index: 1; color: white;">
+
   <h1>Welcome to MindCare</h1>
   <p>Your mind deserves a gentle place to land.
     At MindCare, we guide you through healing,growth, and emotional clarity- one step at a time.
@@ -15,6 +28,7 @@
   <a href="{% url 'mindCare:get_started' %}" class="btn btn-primary me-2">Get Started</a>
   <a href="{% url 'mindCare:about_us' %}" class="btn btn-outline-dark m-2">About Us</a>
 </section>
+</div>
 
 <!-- Features Section -->
 <section class="features d-flex justify-content-center mt-5">

@@ -1,4 +1,7 @@
 {% extends "main.html" %}
+{% block content %}
+{{professionals}}
+
 {% for professional in professionals %}
 <div class="card m-2 p-3 border">
     <h3>{{ professional.title }}</h3>
@@ -13,3 +16,4 @@
 {% empty %}
 <p>No professional help added yet.</p>
 {% endfor %}
+{% endblock %}
