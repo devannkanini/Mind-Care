@@ -29,6 +29,7 @@ urlpatterns = [
     path('professional-help/book/<int:id>/', views.book_professional, name='book_professional'),
     path('my-bookings/', views.my_bookings, name='my_bookings'),
     path('my-help-requests/', views.my_help_requests, name='my_help_requests'),
+    path('professional/dashboard/', views.professional_dashboard, name='pro_dashboard'),
 
 
 ]

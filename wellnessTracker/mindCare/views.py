@@ -436,3 +436,21 @@ def my_help_requests(request):
     }
     
     return render(request, 'mindCare/my_help_requests.html', context)
+@login_required
+def professional_dashboard(request):
+    
+    if not hasattr(request.user, 'professionalhelp') or not request.user.professionalhelp.is_professional:
+         messages.error(request, "Access denied.")
+         return redirect('mindCare:dashboard')
+
+   
+    professional_profile = ProfessionalHelp.objects.get(user=request.user)
+
+  
+    pending_requests = HelpRequest.objects.filter(
+        professional=professional_profile, 
+        status='pending'
+    ).order_by('date_requested')
+
+    context = {'requests': pending_requests, 'profile': professional_profile}
+    return render(request, 'mindCare/pro_dashboard.html', context)
