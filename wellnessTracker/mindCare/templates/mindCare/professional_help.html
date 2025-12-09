@@ -8,13 +8,29 @@
         <div class="row">
             {% for pro in professionals %}
             <div class="col-md-4 mb-4">
-                <div class="card shadow-sm border-0 p-3">
-                    <h5>{{ pro.name }}</h5>
-                    <p><strong>Title:</strong> {{ pro.title }}</p>
-                    <p><strong>Contact:</strong> {{ pro.contact }}</p>
-                    <p><strong>Location:</strong> {{ pro.location }}</p>
-                    <p><strong>Availability:</strong> {{ pro.availability }}</p>
-                    <p><strong>Price:</strong> KES {{ pro.price }}</p>
+                <div class="card shadow-sm border-0 p-3 h-100 d-flex flex-column">
+                    
+                    <div class="flex-grow-1">
+                        <h5>{{ pro.name }}</h5>
+                        <p><strong>Title:</strong> {{ pro.title }}</p>
+                        <p><strong>Contact:</strong> {{ pro.contact }}</p>
+                        <p><strong>Location:</strong> {{ pro.location }}</p>
+                        <p><strong>Availability:</strong> {{ pro.availability }}</p>
+                    </div>
+
+                    <div class="mt-3">
+                        {% if pro.is_paid %}
+                            <p class="mb-2 text-success fw-bold">Price: KES {{ pro.price }}</p>
+                            <a href="{% url 'mindCare:book_professional' id=pro.id %}" class="btn btn-success w-100">
+                                Book Now
+                            </a>
+                        {% else %}
+                            <p class="mb-2 text-primary fw-bold">Price: FREE</p>
+                           <a href="{% url 'mindCare:request_help' id=pro.id %}" class="btn btn-primary w-100">
+    Request Free Help
+</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             {% endfor %}

@@ -1,0 +1,39 @@
+{% extends 'mindCare/home.html' %} 
+
+{% block content %}
+<div class="container mt-5">
+    <h2>My Session Bookings</h2>
+    
+    {% if pending_bookings %}
+        <h3 class="mt-4 text-danger">⚠️ Action Required: Pending Payment</h3>
+        {% for booking in pending_bookings %}
+            <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                <span>
+                    **{{ booking.professional.title }}** on {{ booking.booking_date|date:"M d" }} 
+                    (KSh {{ booking.amount }})
+                </span>
+                <a href="{% url 'mindCare:booking_detail' id=booking.id %}" class="btn btn-sm btn-warning">
+                    Complete Payment
+                </a>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h3 class="mt-4">🚀 Upcoming Sessions</h3>
+    {% if upcoming_bookings %}
+        <ul class="list-group">
+            {% for booking in upcoming_bookings %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    **{{ booking.professional.title }}** - {{ booking.booking_date }} at {{ booking.booking_time }}
+                    <a href="{% url 'mindCare:booking_detail' id=booking.id %}" class="btn btn-sm btn-info">
+                        View Details
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="alert alert-info">You have no confirmed upcoming sessions.</p>
+    {% endif %}
+    
+</div>
+{% endblock %}

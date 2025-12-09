@@ -18,13 +18,17 @@ urlpatterns = [
 
     # path('create-issue/', views.create_issue, name='create_issue'),
     path('issue/', views.fetch_issues, name='fetch_issues'),
-    path('request-help/', views.requestHelp, name='request_help'),
-    path('mpesaPayment/', views.mpesaPayment, name='mpesaPayment'),
+    path('request-help/<int:id>/', views.request_help, name='request_help'),
+    path('mpesaPayment/<int:booking_id>/', views.mpesaPayment, name='mpesaPayment'),
     path('mood/', views.logMood, name='mood'),
     path('journal/', views.logJournal, name='journal'),
     path('journal/<int:id>/', views.journal_detail, name='journal_detail'),
     path('about/', views.about_us, name='about_us'), 
     path('get started/', views.get_started, name='get_started'),
+    path('journal/delete/<int:id>/', views.delete_journal, name='delete_journal'), 
+    path('professional-help/book/<int:id>/', views.book_professional, name='book_professional'),
+    path('my-bookings/', views.my_bookings, name='my_bookings'),
+    path('my-help-requests/', views.my_help_requests, name='my_help_requests'),
 
 
 ]

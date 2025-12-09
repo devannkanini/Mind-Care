@@ -1,8 +1,15 @@
-
-{% extends 'mindCare/home.html' %}
-<h2>Journal Entry - {{ journal.created_at|date:"M d, Y" }}</h2>
-<p>{{ journal.entry }}</p>
-<a href="{% url 'mindCare:dashboard' %}">Back to Dashboard</a>
+{% extends 'mindCare/home.html' %} 
 
 {% block content %}
+<div class="container mt-5">
+    <h2>Journal Entry - {{ journal.created_at|date:"M d, Y" }}</h2>
+    
+    <p class="lead">{{ journal.entry|linebreaksbr }}</p> 
+
+    <a href="{% url 'mindCare:journal' %}" class="btn btn-secondary mt-4">Back to Journal List</a>
+    
+    <a href="{% url 'mindCare:delete_journal' journal.id %}" class="btn btn-danger mt-4 ms-2">
+        <i class="bi bi-trash"></i> Delete Entry
+    </a>
+</div>
 {% endblock %}
